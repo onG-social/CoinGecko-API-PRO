@@ -6,23 +6,36 @@
 <span class="badge-daviddm"><a href="https://david-dm.org/miscavage/coingecko-api" title="View the status of this project's dependencies on DavidDM"><img src="https://img.shields.io/david/miscavage/coingecko-api.svg" alt="Dependency Status" /></a></span>
 <span class="badge-daviddmdev"><a href="https://david-dm.org/miscavage/coingecko-api#info=devDependencies" title="View the status of this project's development dependencies on DavidDM"><img src="https://img.shields.io/david/dev/miscavage/coingecko-api.svg" alt="Dev Dependency Status" /></a></span>
 
-A Node.js wrapper for the CoinGecko API with no dependencies.
+A Node.js wrapper for the CoinGecko API Pro with no dependencies.
 
 ## • Installation
 
-Latest version: 1.0.10
+Latest version: 1.0.15
 
-`npm install coingecko-api`
+`npm install coingecko-api-pro-endpoints`
 
 ## • CoinGecko API Documentation
 
-For complete API documentation, up-to-date parameters, responses and errors, please refer to https://www.coingecko.com/api/docs/v3.
+For complete API documentation, up-to-date parameters, responses and errors, please refer to <https://www.coingecko.com/en/developers/dashboard/user_guide>.
 
 ## • Quick Start Example
 
+***NOTE***
+You MUST specify the API key in your process environment as ***CG_API_KEY***
+
+```bash
+//*NIX Variants
+export CG_API_KEY='YOUR_API_KEY'
+
+//Windows Variants
+set CG_API_KEY='YOUR_API_KEY'
+```
+
+***FAILURE TO SET YOUR KEY WILL MAKE THIS NOT WORK AT ALL - AS ALL PRO ENDPOINTS REQUIRE THE KEY TO WORK***
+
 ```javascript
 //1. Import coingecko-api
-const CoinGecko = require('coingecko-api');
+const CoinGecko = require('coingecko-api-pro-endpoints');
 
 //2. Initiate the CoinGecko API Client
 const CoinGeckoClient = new CoinGecko();
@@ -38,7 +51,9 @@ var func = async() => {
 This module provides helper constants for use in calls.
 
 ___
+
 #### • `CoinGecko.ORDER`
+
 Order results in specific calls by using one of the following values.
 
 | Key | Usage | Description |
@@ -58,7 +73,9 @@ Order results in specific calls by using one of the following values.
 `TRUST_SCORE_DESC` | `CoinGecko.ORDER.TRUST_SCORE_DESC` | Order results by CoinGecko's trust scoring system (descending)
 
 ___
+
 #### • `CoinGecko.STATUS_UPDATE_CATEGORY`
+
 Available status update categories to filter by.
 
 | Key | Usage | Description |
@@ -73,7 +90,9 @@ Available status update categories to filter by.
 `EVENT` | `CoinGecko.STATUS_UPDATE_CATEGORY.EVENT` | Filter status update results by events
 
 ___
+
 #### • `CoinGecko.STATUS_UPDATE_PROJECT_TYPE`
+
 Available status update project types to filter by.
 
 | Key | Usage | Description |
@@ -82,7 +101,9 @@ Available status update project types to filter by.
 `MARKET` | `CoinGecko.STATUS_UPDATE_PROJECT_TYPE.MARKET` | Filter status update results by markets only
 
 ___
+
 #### • `CoinGecko.EVENT_TYPE`
+
 List of event types (most recent from `CoinGeckoClient.events.fetchTypes()`)
 
 | Key | Usage | Description |
@@ -92,10 +113,13 @@ List of event types (most recent from `CoinGeckoClient.events.fetchTypes()`)
 `MEETUP` | `CoinGecko.EVENT_TYPE.MEETUP` | Filter events by meetups only
 
 ___
+
 ## • Making Calls
+
 All calls using the CoinGeckoClient are asynchronous.
 
 All calls are returned in the following format:
+
 ```javascript
 {
     success: Boolean,
@@ -120,38 +144,48 @@ The CoinGeckoClient splits up the currently available calls outline in the offic
 `derivatives` | `CoinGeckoClient.derivatives[...]` | Calls related to derivative endpoints
 
 ___
+
 ### • Ping
+
 Check API server status.
 
 #### `ping()`
+
 Check API server status.
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.ping();
 ```
 
 ___
+
 ### • Global
+
 Get cryptocurrency global data.
 
 #### `global()`
+
 Get cryptocurrency global data.
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.global();
 ```
 
 ___
+
 ### • Coins
+
 Calls related to coins.
 
-
 #### `coins.all()`
+
 List all coins with data (name, price, market, developer, community, etc) - paginated by 50.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/coins/get_coins
+Official documentation: <https://www.coingecko.com/api/docs/v3#/coins/get_coins>
 
 Params:
 
@@ -163,29 +197,35 @@ Params:
 - `params.sparkline`: `Boolean` [default: `false`] - Include sparkline 7 days data
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.coins.all();
 ```
 
 ___
+
 #### `coins.list()`
+
 Use this to obtain all the coins’ id in order to make API calls
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/coins/get_coins_list
+Official documentation: <https://www.coingecko.com/api/docs/v3#/coins/get_coins_list>
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.coins.list();
 ```
 
 ___
+
 #### `coins.markets()`
+
 Use this to obtain all the coins market data (price, market cap, volume).
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/coins/get_coins_markets
+Official documentation: <https://www.coingecko.com/api/docs/v3#/coins/get_coins_markets>
 
 Params:
-             
+
 - `params`: `Object` - Parameters to pass through to the request
 - `params.order`: `String` - Order results by `CoinGecko.ORDER[*]`
 - `params.per_page`: `Number` - Total results per page
@@ -196,15 +236,18 @@ Params:
 - `params.ids`: `Array|String` - List of coin id to filter if you want specific results
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.coins.markets();
 ```
 
 ___
+
 #### `coins.fetch()`
+
 Get current data (name, price, market, … including exchange tickers) for a coin.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/coins/get_coins__id_
+Official documentation: <https://www.coingecko.com/api/docs/v3#/coins/get_coins__id_>
 
 Params:
 
@@ -218,15 +261,18 @@ Params:
 - `params.sparkline`: `Boolean` [default: `false`] - Include sparkline 7 days data
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.coins.fetch('bitcoin', {});
 ```
 
 ___
+
 #### `coins.fetchTickers()`
+
 Get coin tickers (paginated to 100 items).
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/coins/get_coins__id__tickers
+Official documentation: <https://www.coingecko.com/api/docs/v3#/coins/get_coins__id__tickers>
 
 Params:
 
@@ -237,15 +283,18 @@ Params:
 - `params.order`: `String` - [default: `trust_score_desc`] - Order results by `CoinGecko.ORDER.TRUST_SCORE_DESC` or `CoinGecko.ORDER.VOLUME_DESC`
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.coins.fetchTickers('bitcoin');
 ```
 
 ___
+
 #### `coins.fetchHistory()`
+
 Get historical data (name, price, market, stats) at a given date for a coin.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/coins/get_coins__id__history
+Official documentation: <https://www.coingecko.com/api/docs/v3#/coins/get_coins__id__history>
 
 Params:
 
@@ -255,6 +304,7 @@ Params:
 - `params.localization`: `Boolean` [default: `true`] - Set to false to exclude localized languages in response
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.coins.fetchHistory('bitcoin', {
   date: '30-12-2017'
@@ -262,10 +312,12 @@ let data = await CoinGeckoClient.coins.fetchHistory('bitcoin', {
 ```
 
 ___
+
 #### `coins.fetchMarketChart()`
+
 Get historical market data include price, market cap, and 24h volume (granularity auto).
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/coins/get_coins__id__market_chart
+Official documentation: <https://www.coingecko.com/api/docs/v3#/coins/get_coins__id__market_chart>
 
 Params:
 
@@ -275,15 +327,18 @@ Params:
 - `params.vs_currency`: `String` [default: `usd`] - (Required) The target currency of market data (`usd`, `eur`, `jpy`, etc.)
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.coins.fetchMarketChart('bitcoin');
 ```
 
 ___
+
 #### `coins.fetchMarketChartRange()`
+
 Get historical market data include price, market cap, and 24h volume within a range of timestamp (granularity auto). Minutely data will be used for duration within 1 day. Hourly data will be used for duration between 1 day and 90 days. Daily data will be used for duration above 90 days.
 
-Official documentation: https://www.coingecko.com/api/documentations/v3#/coins/get_coins__id__market_chart_range
+Official documentation: <https://www.coingecko.com/api/documentations/v3#/coins/get_coins__id__market_chart_range>
 
 Params:
 
@@ -294,6 +349,7 @@ Params:
 - `params.to`: `Number` - (Required) To date in UNIX Timestamp (eg. 1422577232)
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.coins.fetchMarketChartRange('bitcoin', {
   from: 1392577232,
@@ -302,10 +358,12 @@ let data = await CoinGeckoClient.coins.fetchMarketChartRange('bitcoin', {
 ```
 
 ___
+
 #### `coins.fetchStatusUpdates()`
+
 Get status updates for a given coin.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/coins/get_coins__id__status_updates
+Official documentation: <https://www.coingecko.com/api/docs/v3#/coins/get_coins__id__status_updates>
 
 Params:
 
@@ -315,15 +373,18 @@ Params:
 - `params.page`: `Number` - Page through results
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.coins.fetchStatusUpdates('bitcoin');
 ```
 
 ___
+
 #### `coins.fetchCoinContractInfo()`
+
 Get coin info from contract address.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/coins/get_coins__id__contract__contract_address_
+Official documentation: <https://www.coingecko.com/api/docs/v3#/coins/get_coins__id__contract__contract_address_>
 
 Params:
 
@@ -331,6 +392,7 @@ Params:
 - `assetPlatform`: `String` [default: `ethereum`] -  Asset platform (only `ethereum` is supported at this moment).
 
 Usage Example:
+
 ```javascript
 // 0x contract address (as a test)
 let zrx = '0xe41d2489571d322189246dafa5ebde1f4699f498';
@@ -338,10 +400,12 @@ let data = await CoinGeckoClient.coins.fetchCoinContractInfo(zrx);
 ```
 
 ___
+
 #### `coins.fetchCoinContractMarketChart()`
+
 Get historical market data include price, market cap, and 24h volume (granularity auto) from a contract address.
 
-Official documentation: https://www.coingecko.com/api/documentations/v3#/contract/get_coins__id__contract__contract_address__market_chart_
+Official documentation: <https://www.coingecko.com/api/documentations/v3#/contract/get_coins__id__contract__contract_address__market_chart_>
 
 Params:
 
@@ -352,6 +416,7 @@ Params:
 - `params.days`: `String` [default: `1`] - (Required) Data up to number of days ago (eg. 1,14,30,max)
 
 Usage Example:
+
 ```javascript
 // 0x contract address (as a test)
 let zrx = '0xe41d2489571d322189246dafa5ebde1f4699f498';
@@ -359,10 +424,12 @@ let data = await CoinGeckoClient.coins.fetchCoinContractMarketChart(zrx);
 ```
 
 ___
+
 #### `coins.fetchCoinContractMarketChartRange()`
+
 Get historical market data include price, market cap, and 24h volume within a range of timestamp (granularity auto).
 
-Official documentation: https://www.coingecko.com/api/documentations/v3#/contract/get_coins__id__contract__contract_address__market_chart_range
+Official documentation: <https://www.coingecko.com/api/documentations/v3#/contract/get_coins__id__contract__contract_address__market_chart_range>
 Params:
 
 - `contractAddress`: `String` - (Required) Token’s contract address
@@ -373,6 +440,7 @@ Params:
 - `params.to`: `Number` - (Required) To date in UNIX Timestamp (eg. 1422577232)
 
 Usage Example:
+
 ```javascript
 // 0x contract address (as a test)
 let zrx = '0xe41d2489571d322189246dafa5ebde1f4699f498';
@@ -383,51 +451,62 @@ let data = await CoinGeckoClient.coins.fetchCoinContractMarketChartRange(zrx, 'e
 ```
 
 ___
+
 ### • Exchanges
+
 Calls related to exchanges.
 
-
 #### `exchanges.all()`
+
 List all exchanges.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/exchanges_(beta)/get_exchanges
+Official documentation: <https://www.coingecko.com/api/docs/v3#/exchanges_(beta)/get_exchanges>
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.exchanges.all();
 ```
 
 ___
+
 #### `exchanges.list()`
+
 List all supported markets id and name (no pagination required).
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/exchanges_(beta)/get_exchanges_list
+Official documentation: <https://www.coingecko.com/api/docs/v3#/exchanges_(beta)/get_exchanges_list>
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.exchanges.list();
 ```
 
 ___
+
 #### `exchanges.fetch()`
+
 Get exchange volume in BTC and top 100 tickers only for a given exchange.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/exchanges_(beta)/get_exchanges__id_
+Official documentation: <https://www.coingecko.com/api/docs/v3#/exchanges_(beta)/get_exchanges__id_>
 
 Params:
 
 - `exchangeId`: `String` - (Required) The exchange id (can be obtained from `exchanges.all()`) eg. `binance`
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.exchanges.fetch('binance');
 ```
 
 ___
+
 #### `exchanges.fetchTickers()`
+
 Get tickers for a given exchange.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/exchanges_(beta)/get_exchanges__id__tickers
+Official documentation: <https://www.coingecko.com/api/docs/v3#/exchanges_(beta)/get_exchanges__id__tickers>
 
 Params:
 
@@ -438,15 +517,18 @@ Params:
 - `params.order`: `String` - [default: `trust_score_desc`] - Order results by `CoinGecko.ORDER.TRUST_SCORE_DESC` or `CoinGecko.ORDER.VOLUME_DESC`
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.exchanges.fetchTickers('binance');
 ```
 
 ___
+
 #### `exchanges.fetchStatusUpdates()`
+
 Get status updates for a given exchange.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/exchanges_(beta)/get_exchanges__id__status_updates
+Official documentation: <https://www.coingecko.com/api/docs/v3#/exchanges_(beta)/get_exchanges__id__status_updates>
 
 Params:
 
@@ -456,15 +538,18 @@ Params:
 - `params.per_page`: `Number` - Total results per page
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.exchanges.fetchStatusUpdates('binance');
 ```
 
 ___
+
 #### `exchanges.fetchVolumeChart()`
+
 Get volume chart data for a given exchange, returned in BTC
 
-Official documentation: https://www.coingecko.com/en/api#operations-exchanges%20(beta)-get_exchanges__id__volume_chart
+Official documentation: <https://www.coingecko.com/en/api#operations-exchanges%20(beta)-get_exchanges__id__volume_chart>
 
 Params:
 
@@ -473,6 +558,7 @@ Params:
 - `params.days`: `Number` - Data up to number of days ago (eg. 1, 14, 30)
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.exchanges.fetchVolumeChart('binance', {
   days: 1,
@@ -480,14 +566,16 @@ let data = await CoinGeckoClient.exchanges.fetchVolumeChart('binance', {
 ```
 
 ___
+
 ### • Status Updates
+
 Calls related to status updates.
 
-
 #### `statusUpdates.all()`
+
 List all status_updates with data (description, category, created_at, user, user_title and pin).
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/status_updates_(beta)/get_status_updates
+Official documentation: <https://www.coingecko.com/api/docs/v3#/status_updates_(beta)/get_status_updates>
 
 Params:
 
@@ -498,19 +586,22 @@ Params:
 - `params.per_page`: `Number` - Total results per page
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.statusUpdates.all();
 ```
 
 ___
+
 ### • Events
+
 Calls related to events.
 
-
 #### `events.all()`
+
 Get events, paginated by 100.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/events/get_events
+Official documentation: <https://www.coingecko.com/api/docs/v3#/events/get_events>
 
 Params:
 
@@ -523,56 +614,68 @@ Params:
 - `params.to_date`: `String` - Lists events before this date yyyy-mm-dd (set `upcoming_events_only` to false if fetching past events)
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.events.all();
 ```
 
 ___
+
 #### `events.fetchCountries()`
+
 Get list of event countries.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/events/get_events_countries
+Official documentation: <https://www.coingecko.com/api/docs/v3#/events/get_events_countries>
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.events.fetchCountries();
 ```
 
 ___
+
 #### `events.fetchTypes()`
+
 Get list of event types.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/events/get_events_types
+Official documentation: <https://www.coingecko.com/api/docs/v3#/events/get_events_types>
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.events.fetchTypes();
 ```
 
 ___
+
 ### • Exchange Rates
+
 Calls related to exchange rates.
 
-
 #### `exchangeRates.all()`
+
 Get BTC-to-Currency exchange rates.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/exchange_rates/get_exchange_rates
+Official documentation: <https://www.coingecko.com/api/docs/v3#/exchange_rates/get_exchange_rates>
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.exchangeRates.all();
 ```
 
 ___
+
 ### • Simple
+
 Calls related to simple endpoints.
 
-
 #### `simple.price()`
+
 Get the current price of any cryptocurrencies in any other supported currencies that you need.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/simple/get_simple_price
+Official documentation: <https://www.coingecko.com/api/docs/v3#/simple/get_simple_price>
 
 Params:
 
@@ -583,6 +686,7 @@ Params:
 - `params.include_last_updated_at`: `Boolean` - [default: `false`] - To include last_updated_at of price.
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.simple.price({
     ids: ['bitcoin', 'ethereum'],
@@ -591,21 +695,26 @@ let data = await CoinGeckoClient.simple.price({
 ```
 
 ___
+
 #### `simple.supportedVsCurrencies()`
+
 Get list of supported vs/comparisons currencies.
 
-Official documentation: https://www.coingecko.com/api/docs/v3#/simple/get_simple_supported_vs_currencies
+Official documentation: <https://www.coingecko.com/api/docs/v3#/simple/get_simple_supported_vs_currencies>
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.simple.supportedVsCurrencies();
 ```
 
 ___
+
 #### `simple.fetchTokenPrice()`
+
 Get current price of tokens (using contract addresses) for a given platform in any other currency that you need.
 
-Official documentation: https://www.coingecko.com/en/api#operations-simple-get_simple_token_price__id_
+Official documentation: <https://www.coingecko.com/en/api#operations-simple-get_simple_token_price__id_>
 
 Params:
 
@@ -618,8 +727,8 @@ Params:
 - `params.include_24hr_change`: `Boolean` - [default: `false`] - Include 24hr change in results or not
 - `params.include_last_updated_at`: `Boolean` - [default: `false`] - Include last updated date in results or not
 
-
 Usage Example:
+
 ```javascript
 // 0x contract address (as a test)
 var zrx = '0xe41d2489571d322189246dafa5ebde1f4699f498';
@@ -630,14 +739,16 @@ let data = await CoinGeckoClient.simple.fetchTokenPrice({
 ```
 
 ___
+
 ### • Finance
+
 Calls related to finance endpoints.
 
-
 #### `finance.fetchPlatforms()`
+
 List all finance platforms
 
-Official documentation: https://www.coingecko.com/api/documentations/v3#/finance_(beta)/get_finance_platforms
+Official documentation: <https://www.coingecko.com/api/documentations/v3#/finance_(beta)/get_finance_platforms>
 
 Params:
 
@@ -646,15 +757,18 @@ Params:
 - `params.page`: `Number` - Page of results (paginated to 100 by default)
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.finance.fetchPlatforms();
 ```
 
 ___
+
 #### `finance.fetchProducts()`
+
 List all finance products
 
-Official documentation: https://www.coingecko.com/api/documentations/v3#/finance_(beta)/get_finance_products
+Official documentation: <https://www.coingecko.com/api/documentations/v3#/finance_(beta)/get_finance_products>
 
 Params:
 
@@ -665,19 +779,22 @@ Params:
 - `params.end_at`: `String` - End date of the financial products
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.finance.fetchProducts();
 ```
 
 ___
+
 ### • Indexes
+
 Calls related to index endpoints.
 
-
 #### `indexes.all()`
+
 List all market indexes
 
-Official documentation: https://www.coingecko.com/en/api#operations-tag-indexes_(beta)
+Official documentation: <https://www.coingecko.com/en/api#operations-tag-indexes_(beta>)
 
 Params:
 
@@ -686,54 +803,63 @@ Params:
 - `params.page`: `Number` - Page of results (paginated to 100 by default)
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.indexes.all();
 ```
 
 #### `indexes.fetch()`
+
 List all market indexes
 
-Official documentation: https://www.coingecko.com/en/api#operations-indexes%20(beta)-get_indexes__id_
+Official documentation: <https://www.coingecko.com/en/api#operations-indexes%20(beta)-get_indexes__id_>
 
 Params:
 
 - `indexId`: `String` - (Required) The index id (can be obtained from `indexes.list()`)
 
 Usage Example:
+
 ```javascript
 let testIndexId = 'BTC'; // as a test
 let data = await CoinGeckoClient.indexes.fetch(testIndexId);
 ```
 
 #### `indexes.list()`
+
 List market indexes id and name
 
-Official documentation: https://www.coingecko.com/en/api#operations-indexes%20(beta)-get_indexes_list
+Official documentation: <https://www.coingecko.com/en/api#operations-indexes%20(beta)-get_indexes_list>
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.indexes.list();
 ```
 
 ___
+
 ### • Derivatives
+
 Calls related to derivative endpoints.
 
-
 #### `derivatives.fetchTickers()`
+
 List all derivative tickers
 
-Official documentation: https://www.coingecko.com/api/documentations/v3#/operations-tag-derivatives_(beta)
+Official documentation: <https://www.coingecko.com/api/documentations/v3#/operations-tag-derivatives_(beta>)
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.derivatives.fetchTickers();
 ```
 
 #### `derivatives.allExchanges()`
+
 List all derivative exchanges
 
-Official documentation: https://www.coingecko.com/en/api#operations-derivatives%20(beta)-get_derivatives_exchanges
+Official documentation: <https://www.coingecko.com/en/api#operations-derivatives%20(beta)-get_derivatives_exchanges>
 
 Params:
 
@@ -743,14 +869,16 @@ Params:
 - `params.page`: `Number` - Page of results
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.derivatives.allExchanges();
 ```
 
 #### `derivatives.fetchExchange()`
+
 Show derivative exchange data
 
-Official documentation: https://www.coingecko.com/en/api#operations-derivatives%20(beta)-get_derivatives_exchanges__id_
+Official documentation: <https://www.coingecko.com/en/api#operations-derivatives%20(beta)-get_derivatives_exchanges__id_>
 
 Params:
 
@@ -759,32 +887,29 @@ Params:
 - `params.include_tickers`: `boolean` - [default: `false`] - Include the tickers information
 
 Usage Example:
+
 ```javascript
 let testExchangeId = 'bitmex'; // as a test
 let data = await CoinGeckoClient.derivatives.fetchExchange(testExchangeId);
 ```
 
 #### `derivatives.listExchanges()`
+
 List all derivative exchanges name and identifier
 
-Official documentation: https://www.coingecko.com/en/api#operations-derivatives%20(beta)-get_derivatives_exchanges_list
+Official documentation: <https://www.coingecko.com/en/api#operations-derivatives%20(beta)-get_derivatives_exchanges_list>
 
 Usage Example:
+
 ```javascript
 let data = await CoinGeckoClient.derivatives.listExchanges();
 ```
-
-## • Say Hi
-
-Find me on Gab: [@markmiscavage](https://gab.com/markmiscavage).
-
-Tweet at me: [@markmiscavage](https://twitter.com/markmiscavage).
 
 ## • License
 
 MIT License
 
-Copyright (c) 2020 Mark Miscavage
+Copyright (c) 2020 Mark Miscavage and Phillip Rumple (SoMee)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
