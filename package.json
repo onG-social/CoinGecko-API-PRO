@@ -1,6 +1,6 @@
 {
   "name": "coingecko-api-pro-endpoints",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "A Node.js wrapper for the CoinGecko API PRO with no dependencies.",
   "main": "index.js",
   "homepage": "https://github.com/onG-Social/CoinGecko-API-PRO#readme",
