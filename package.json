@@ -1,5 +1,5 @@
 {
-  "name": "coingecko-api",
+  "name": "coingecko-api-pro-endpoints",
   "version": "1.0.15",
   "description": "A Node.js wrapper for the CoinGecko API PRO with no dependencies.",
   "main": "index.js",
